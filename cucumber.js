@@ -3,7 +3,7 @@ module.exports = {
     require: ['steps/**/*.ts'],
     paths: ['features/**/*.feature'],
     requireModule: ['ts-node/register'],
-    format: ['progress'],
+    format: ['progress', 'html:reports/cucumber-report.html'],
     parallel: 1
   }
 };

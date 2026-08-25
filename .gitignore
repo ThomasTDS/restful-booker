@@ -6,6 +6,9 @@ yarn-error.log
 # Build outputs
 dist/
 
+# Test reports
+reports/
+
 # TypeScript
 *.tsbuildinfo
 

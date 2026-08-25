@@ -36,6 +36,8 @@ Não é necessário rodar `npx playwright install`: como são testes de API, nen
 npm test
 ```
 
+Ao final da execução, um relatório HTML é gerado em `reports/cucumber-report.html` (não versionado).
+
 ---
 
 ### API testada
@@ -61,9 +63,9 @@ Autenticação: `POST /auth` com `{ "username": "admin", "password": "password12
 - BDD / Gherkin: cenários claros e legíveis em `.feature`.
 - API Client Objects: `AuthApiClient` e `BookingApiClient` encapsulam as chamadas HTTP, do mesmo jeito que Page Objects encapsulam elementos de UI.
 - Cobertura de autenticação, CRUD completo, PUT vs. PATCH, e casos de acesso não autorizado (403).
+- Relatório HTML automatizado a cada execução (`reports/cucumber-report.html`).
+- Limpeza automática: o hook `After` remove o booking criado no cenário (via token próprio de limpeza), evitando acúmulo de dados na API pública.
 
 ### Próximos Passos (Melhorias Futuras)
 
-- Relatórios HTML automatizados.
 - Integração contínua (CI/CD) rodando os testes a cada push.
-- Limpeza automática dos bookings criados durante os testes (rotina de `After` fazendo `DELETE`).

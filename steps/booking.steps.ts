@@ -34,6 +34,14 @@ Before(async () => {
 });
 
 After(async () => {
+  if (bookingId !== undefined) {
+    try {
+      const cleanupToken = await authClient.getValidToken();
+      await bookingClient.deleteBooking(bookingId, cleanupToken);
+    } catch {
+      // booking já pode ter sido removido pelo próprio cenário; ignora falha de limpeza
+    }
+  }
   await apiContext.dispose();
 });
 
