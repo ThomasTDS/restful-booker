@@ -38,6 +38,18 @@ npm test
 
 Ao final da execução, um relatório HTML é gerado em `reports/cucumber-report.html` (não versionado).
 
+### Rodar contra outra URL
+
+Por padrão os testes apontam para `https://restful-booker.herokuapp.com`. Para rodar contra outro ambiente (ex: uma instância local ou de staging), defina a variável de ambiente `BASE_URL`:
+
+```
+# PowerShell
+$env:BASE_URL="http://localhost:3001"; npm test
+
+# bash
+BASE_URL=http://localhost:3001 npm test
+```
+
 ---
 
 ### API testada
