@@ -1,4 +1,4 @@
-import { Given, When, Then, Before, After } from '@cucumber/cucumber';
+import { Given, When, Then, Before, After, Status, ITestCaseHookParameter } from '@cucumber/cucumber';
 import { request as newApiRequest, APIRequestContext, APIResponse } from 'playwright';
 import { expect } from '@playwright/test';
 import { AuthApiClient } from '../api/AuthApiClient';
@@ -33,7 +33,28 @@ Before(async () => {
   bookingData = undefined;
 });
 
-After(async () => {
+After(async function (this: any, scenario: ITestCaseHookParameter) {
+  if (scenario.result?.status === Status.FAILED && lastResponse) {
+    try {
+      let responseBody: unknown;
+      try {
+        responseBody = await lastResponse.json();
+      } catch {
+        responseBody = await lastResponse.text();
+      }
+      const evidence = {
+        url: lastResponse.url(),
+        status: lastResponse.status(),
+        statusText: lastResponse.statusText(),
+        headers: lastResponse.headers(),
+        body: responseBody,
+      };
+      this.attach(JSON.stringify(evidence, null, 2), 'application/json');
+    } catch {
+      // evita mascarar a falha original do teste com um erro na captura de evidência
+    }
+  }
+
   if (bookingId !== undefined) {
     try {
       const cleanupToken = await authClient.getValidToken();
