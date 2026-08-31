@@ -1,5 +1,7 @@
 # 🔌 QA API + Cucumber - restful-booker
 
+[![API Tests](https://github.com/ThomasTDS/restful-booker/actions/workflows/tests.yml/badge.svg)](https://github.com/ThomasTDS/restful-booker/actions/workflows/tests.yml)
+
 ## Descrição
 
 Este repositório contém testes automatizados da API pública **[restful-booker](https://restful-booker.herokuapp.com)** utilizando **Playwright** (camada `request`, sem navegador), **Cucumber (BDD/Gherkin)** e uma camada de **API Clients** que cumpre, para testes de API, o mesmo papel que o Page Object Model cumpre em testes de UI: encapsular as chamadas HTTP e esconder detalhes de endpoint/headers dos steps e dos cenários.
@@ -77,4 +79,4 @@ Autenticação: `POST /auth` com `{ "username": "admin", "password": "password12
 - Cobertura de autenticação, CRUD completo, PUT vs. PATCH, e casos de acesso não autorizado (403).
 - Relatório HTML automatizado a cada execução (`reports/cucumber-report.html`).
 - Limpeza automática: o hook `After` remove o booking criado no cenário (via token próprio de limpeza), evitando acúmulo de dados na API pública.
-- Integração contínua via GitHub Actions: os testes rodam automaticamente a cada push e pull request para `main` (ver [.github/workflows/tests.yml](.github/workflows/tests.yml)), com o relatório HTML publicado como artifact do workflow.
+- Integração contínua via GitHub Actions: os testes rodam automaticamente a cada push e pull request para `main`, e também diariamente às 06:00 UTC (ver [.github/workflows/tests.yml](.github/workflows/tests.yml)) para detectar quebras causadas pela própria API pública, com o relatório HTML publicado como artifact do workflow.
