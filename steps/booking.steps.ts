@@ -5,7 +5,7 @@ import { AuthApiClient } from '../api/AuthApiClient';
 import { BookingApiClient } from '../api/BookingApiClient';
 import { Booking, CreateBookingResponse, AuthResponse } from '../types/booking';
 
-const BASE_URL = 'https://restful-booker.herokuapp.com';
+const BASE_URL = process.env.BASE_URL ?? 'https://restful-booker.herokuapp.com';
 
 const defaultBooking: Booking = {
   firstname: 'Fulano',
