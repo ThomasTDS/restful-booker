@@ -65,7 +65,4 @@ Autenticação: `POST /auth` com `{ "username": "admin", "password": "password12
 - Cobertura de autenticação, CRUD completo, PUT vs. PATCH, e casos de acesso não autorizado (403).
 - Relatório HTML automatizado a cada execução (`reports/cucumber-report.html`).
 - Limpeza automática: o hook `After` remove o booking criado no cenário (via token próprio de limpeza), evitando acúmulo de dados na API pública.
-
-### Próximos Passos (Melhorias Futuras)
-
-- Integração contínua (CI/CD) rodando os testes a cada push.
+- Integração contínua via GitHub Actions: os testes rodam automaticamente a cada push e pull request para `main` (ver [.github/workflows/tests.yml](.github/workflows/tests.yml)), com o relatório HTML publicado como artifact do workflow.
