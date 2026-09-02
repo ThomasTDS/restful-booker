@@ -16,12 +16,14 @@ Legenda:
 | TC-003 | Criação | Criar booking sem nenhum token de autenticação | Funcional | Alta | Automatizado | [create-booking.feature:7](../features/create-booking.feature#L7) |
 | TC-004 | Consulta | Buscar um booking existente pelo id | Funcional | Alta | Automatizado | [get-booking.feature:3](../features/get-booking.feature#L3) |
 | TC-005 | Consulta | Buscar um booking inexistente | Negativo | Média | Automatizado | [get-booking.feature:8](../features/get-booking.feature#L8) |
-| TC-006 | Consulta | Buscar bookings por filtros (firstname/lastname/checkin/checkout) | Funcional | Média | Planejado | — (client já existe: `BookingApiClient.getBookingIds`, sem cobertura ainda) |
+| TC-006 | Consulta | Buscar bookings filtrando por firstname e lastname | Funcional | Média | Automatizado | [get-booking.feature:15](../features/get-booking.feature#L15) |
 | TC-007 | Atualização | Atualizar booking com token válido (PUT) | Funcional | Crítica | Automatizado | [update-booking.feature:4](../features/update-booking.feature#L4) |
 | TC-008 | Atualização | Tentar atualizar booking sem token de autenticação | Negativo | Alta | Automatizado | [update-booking.feature:10](../features/update-booking.feature#L10) |
 | TC-009 | Atualização | Atualizar parcialmente o booking com PATCH | Funcional | Média | Automatizado | [update-booking.feature:17](../features/update-booking.feature#L17) |
 | TC-010 | Remoção | Remover booking com token válido | Funcional | Crítica | Automatizado | [delete-booking.feature:3](../features/delete-booking.feature#L3) |
 | TC-011 | Remoção | Tentar remover booking sem token de autenticação | Negativo | Alta | Automatizado | [delete-booking.feature:9](../features/delete-booking.feature#L9) |
+
+`BookingApiClient.getBookingIds` também aceita filtro por `checkin`/`checkout`, mas o TC-006 cobre só `firstname`/`lastname`: o filtro por data na API pública de demonstração é conhecido por ser instável, e testá-lo arriscaria um teste flaky em vez de validar um comportamento real.
 
 ## Smoke suite
 

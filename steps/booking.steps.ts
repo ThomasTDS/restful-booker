@@ -3,7 +3,7 @@ import { request as newApiRequest, APIRequestContext, APIResponse } from 'playwr
 import { expect } from '@playwright/test';
 import { AuthApiClient } from '../api/AuthApiClient';
 import { BookingApiClient } from '../api/BookingApiClient';
-import { Booking, CreateBookingResponse, AuthResponse } from '../types/booking';
+import { Booking, CreateBookingResponse, AuthResponse, BookingId } from '../types/booking';
 
 const BASE_URL = process.env.BASE_URL ?? 'https://restful-booker.herokuapp.com';
 
@@ -130,6 +130,27 @@ Then('os dados retornados devem corresponder ao booking criado', async () => {
 
 Then('a resposta deve indicar que o booking não foi encontrado', async () => {
   expect(lastResponse.status()).toBe(404);
+});
+
+When('ele busca bookings filtrando pelo firstname e lastname do booking criado', async () => {
+  const { firstname, lastname } = bookingData as Booking;
+  lastResponse = await bookingClient.getBookingIds({ firstname, lastname });
+});
+
+Then('o id do booking criado deve estar entre os resultados', async () => {
+  expect(lastResponse.status()).toBe(200);
+  const body: BookingId[] = await lastResponse.json();
+  expect(body.some((b) => b.bookingid === bookingId)).toBe(true);
+});
+
+When('ele busca bookings filtrando por um firstname e lastname que não correspondem a nenhum booking', async () => {
+  lastResponse = await bookingClient.getBookingIds({ firstname: 'Inexistente-xyz-999', lastname: 'NaoExiste-abc-000' });
+});
+
+Then('o id do booking criado não deve estar entre os resultados', async () => {
+  expect(lastResponse.status()).toBe(200);
+  const body: BookingId[] = await lastResponse.json();
+  expect(body.some((b) => b.bookingid === bookingId)).toBe(false);
 });
 
 // ATUALIZAÇÃO (PUT/PATCH)
