@@ -4,7 +4,8 @@
   "description": "Testes de API (BDD + Page-Object-like clients) contra a restful-booker demo API",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js"
+    "test": "cucumber-js",
+    "test:smoke": "cucumber-js --tags @smoke"
   },
   "keywords": [],
   "author": "",
