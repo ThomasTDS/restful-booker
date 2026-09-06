@@ -49,6 +49,13 @@ npm test
 
 Ao final da execução, um relatório HTML é gerado em `reports/cucumber-report.html` (não versionado).
 
+### Rodar apenas a smoke suite
+```
+npm run test:smoke
+```
+
+Roda só os fluxos ponta-a-ponta mais críticos (autenticação, criação, consulta, atualização e remoção — ver [docs/test-cases.md](docs/test-cases.md)). Como o `cucumber.js` sempre escreve no mesmo arquivo, rodar isso depois de `npm test` **sobrescreve** `reports/cucumber-report.html` com só esses 5 cenários.
+
 ### Rodar contra outra URL
 
 Por padrão os testes apontam para `https://restful-booker.herokuapp.com`. Para rodar contra outro ambiente (ex: uma instância local ou de staging), defina a variável de ambiente `BASE_URL`:
@@ -90,3 +97,16 @@ Autenticação: `POST /auth` com `{ "username": "admin", "password": "password12
 - Limpeza automática: o hook `After` remove o booking criado no cenário (via token próprio de limpeza), evitando acúmulo de dados na API pública.
 - Integração contínua via GitHub Actions: os testes rodam automaticamente a cada push e pull request para `main`, e também diariamente às 06:00 UTC (ver [.github/workflows/tests.yml](.github/workflows/tests.yml)) para detectar quebras causadas pela própria API pública, com o relatório HTML publicado como artifact do workflow.
 - Rastreabilidade de QA: matriz de test cases em [docs/test-cases.md](docs/test-cases.md), com tags `@TC-XXX` em cada `Scenario` e um subconjunto `@smoke` (`npm run test:smoke`) cobrindo os fluxos ponta-a-ponta mais críticos. Bugs reais encontrados são documentados como GitHub Issues usando o template em [.github/ISSUE_TEMPLATE/bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md).
+
+---
+
+### Fluxo de Trabalho
+
+A branch `main` é protegida: toda mudança passa por Pull Request, e o merge só é liberado depois que o check de CI (`test`) passa. Fluxo padrão:
+
+```
+git checkout -b minha-branch
+# editar, rodar npm test localmente
+git push -u origin minha-branch
+# abrir PR no GitHub, aguardar o check "test" passar, fazer merge
+```
