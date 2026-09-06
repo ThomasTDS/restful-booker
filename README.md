@@ -14,14 +14,23 @@ O objetivo é praticar testes de API "de verdade": autenticação, CRUD completo
 
 ```text
 qa-api-restful-booker/
-├── features/              # Cenários em Gherkin (.feature)
-├── steps/                 # Implementação dos steps do Cucumber
-├── api/                   # API Clients (AuthApiClient, BookingApiClient)
-├── types/                 # Interfaces TypeScript (shape dos dados da API)
-├── cucumber.js            # Configuração do Cucumber
-├── package.json           # Dependências e scripts NPM
-├── tsconfig.json          # Configuração do TypeScript
-└── README.md              # Este arquivo
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   │   └── bug_report.md   # Template de Issue para bugs reais
+│   └── workflows/
+│       └── tests.yml       # Pipeline de CI (push, PR e execução diária agendada)
+├── docs/
+│   └── test-cases.md       # Matriz de rastreabilidade dos test cases
+├── features/               # Cenários em Gherkin (.feature)
+├── steps/                  # Implementação dos steps do Cucumber
+├── api/                    # API Clients (AuthApiClient, BookingApiClient)
+├── types/                  # Interfaces TypeScript (shape dos dados da API)
+├── reports/                # Relatório HTML gerado a cada execução (não versionado)
+├── cucumber.js             # Configuração do Cucumber
+├── package.json            # Dependências e scripts NPM
+├── tsconfig.json           # Configuração do TypeScript
+├── LICENSE
+└── README.md               # Este arquivo
 ```
 
 ---
