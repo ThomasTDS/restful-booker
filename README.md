@@ -92,6 +92,7 @@ Autenticação: `POST /auth` com `{ "username": "admin", "password": "password12
 
 - BDD / Gherkin: cenários claros e legíveis em `.feature`.
 - API Client Objects: `AuthApiClient` e `BookingApiClient` encapsulam as chamadas HTTP, do mesmo jeito que Page Objects encapsulam elementos de UI.
+- Validação de schema com [Zod](https://zod.dev/): as respostas da API são validadas em tempo de execução contra os schemas em `types/booking.ts` (fonte única de verdade, com os tipos TypeScript derivados via `z.infer`), não só tipadas por anotação — se a API mudar o formato de uma resposta, o teste falha com uma mensagem clara em vez de passar silenciosamente ou quebrar mais adiante.
 - Cobertura de autenticação, CRUD completo, PUT vs. PATCH, e casos de acesso não autorizado (403).
 - Relatório HTML automatizado a cada execução (`reports/cucumber-report.html`).
 - Limpeza automática: o hook `After` remove o booking criado no cenário (via token próprio de limpeza), evitando acúmulo de dados na API pública.
