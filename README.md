@@ -24,9 +24,11 @@ qa-api-restful-booker/
 ├── features/               # Cenários em Gherkin (.feature)
 ├── steps/                  # Implementação dos steps do Cucumber
 ├── api/                    # API Clients (AuthApiClient, BookingApiClient)
-├── types/                  # Interfaces TypeScript (shape dos dados da API)
+├── types/                  # Schemas Zod e tipos TypeScript derivados (shape dos dados da API)
 ├── reports/                # Relatório HTML gerado a cada execução (não versionado)
 ├── cucumber.js             # Configuração do Cucumber
+├── eslint.config.js        # Configuração do ESLint
+├── .prettierrc             # Configuração do Prettier
 ├── package.json            # Dependências e scripts NPM
 ├── tsconfig.json           # Configuração do TypeScript
 ├── LICENSE
@@ -36,6 +38,7 @@ qa-api-restful-booker/
 ---
 
 ### Instalar Dependências
+
 ```
 npm install
 ```
@@ -43,6 +46,7 @@ npm install
 Não é necessário rodar `npx playwright install`: como são testes de API, nenhum navegador é aberto — só a camada `request` do Playwright é usada para fazer as chamadas HTTP.
 
 ### Rodar todos os testes
+
 ```
 npm test
 ```
@@ -50,11 +54,22 @@ npm test
 Ao final da execução, um relatório HTML é gerado em `reports/cucumber-report.html` (não versionado).
 
 ### Rodar apenas a smoke suite
+
 ```
 npm run test:smoke
 ```
 
 Roda só os fluxos ponta-a-ponta mais críticos (autenticação, criação, consulta, atualização e remoção — ver [docs/test-cases.md](docs/test-cases.md)). Como o `cucumber.js` sempre escreve no mesmo arquivo, rodar isso depois de `npm test` **sobrescreve** `reports/cucumber-report.html` com só esses 5 cenários.
+
+### Lint e formatação
+
+```
+npm run lint           # ESLint (typescript-eslint, com informação de tipos)
+npm run format:check   # Prettier, só verifica
+npm run format         # Prettier, aplica as correções
+```
+
+O CI roda `lint` e `format:check` antes dos testes, então mudanças com problema de estilo ou tipo falham rápido, sem gastar tempo batendo na API pública.
 
 ### Rodar contra outra URL
 
@@ -72,15 +87,15 @@ BASE_URL=http://localhost:3001 npm test
 
 ### API testada
 
-| Método | Rota          | Função                                             |
-|--------|---------------|-----------------------------------------------------|
-| POST   | `/auth`       | Gera token de autenticação                          |
-| GET    | `/booking`    | Lista IDs de bookings (aceita filtros)               |
-| GET    | `/booking/:id`| Busca um booking específico                          |
-| POST   | `/booking`    | Cria um booking                                      |
-| PUT    | `/booking/:id`| Atualiza um booking (todos os campos obrigatórios)   |
-| PATCH  | `/booking/:id`| Atualiza parcialmente um booking                     |
-| DELETE | `/booking/:id`| Remove um booking                                    |
+| Método | Rota           | Função                                             |
+| ------ | -------------- | -------------------------------------------------- |
+| POST   | `/auth`        | Gera token de autenticação                         |
+| GET    | `/booking`     | Lista IDs de bookings (aceita filtros)             |
+| GET    | `/booking/:id` | Busca um booking específico                        |
+| POST   | `/booking`     | Cria um booking                                    |
+| PUT    | `/booking/:id` | Atualiza um booking (todos os campos obrigatórios) |
+| PATCH  | `/booking/:id` | Atualiza parcialmente um booking                   |
+| DELETE | `/booking/:id` | Remove um booking                                  |
 
 Autenticação: `POST /auth` com `{ "username": "admin", "password": "password123" }` retorna um token, enviado nas chamadas de `PUT`, `PATCH` e `DELETE` via header `Cookie: token=<valor>`.
 

@@ -1,5 +1,5 @@
 import { APIRequestContext } from 'playwright';
-import { AuthResponse } from '../types/booking';
+import { AuthResponse, AuthResponseSchema } from '../types/booking';
 
 export class AuthApiClient {
   readonly request: APIRequestContext;
@@ -17,7 +17,7 @@ export class AuthApiClient {
 
   async getValidToken(): Promise<string> {
     const response = await this.createToken('admin', 'password123');
-    const body: AuthResponse = await response.json();
+    const body: AuthResponse = AuthResponseSchema.parse(await response.json());
     return body.token;
   }
 }

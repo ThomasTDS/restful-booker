@@ -4,6 +4,6 @@ module.exports = {
     paths: ['features/**/*.feature'],
     requireModule: ['ts-node/register'],
     format: ['progress', 'html:reports/cucumber-report.html'],
-    parallel: 1
-  }
+    parallel: 1,
+  },
 };
