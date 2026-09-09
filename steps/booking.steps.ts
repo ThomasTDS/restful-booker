@@ -3,7 +3,17 @@ import { request as newApiRequest, APIRequestContext, APIResponse } from 'playwr
 import { expect } from '@playwright/test';
 import { AuthApiClient } from '../api/AuthApiClient';
 import { BookingApiClient } from '../api/BookingApiClient';
-import { Booking, CreateBookingResponse, AuthResponse, BookingId } from '../types/booking';
+import {
+  Booking,
+  BookingSchema,
+  CreateBookingResponse,
+  CreateBookingResponseSchema,
+  AuthResponse,
+  AuthResponseSchema,
+  BookingId,
+  BookingIdSchema,
+} from '../types/booking';
+import { z } from 'zod';
 
 const BASE_URL = process.env.BASE_URL ?? 'https://restful-booker.herokuapp.com';
 
@@ -81,7 +91,7 @@ When('ele solicita um token com o usuário {string} e a senha {string}', async (
 
 Then('ele deve receber um token de autenticação válido', async () => {
   expect(lastResponse.status()).toBe(200);
-  const body: AuthResponse = await lastResponse.json();
+  const body: AuthResponse = AuthResponseSchema.parse(await lastResponse.json());
   expect(body.token).toBeTruthy();
 });
 
@@ -94,7 +104,7 @@ Then('a resposta deve indicar credenciais inválidas', async () => {
 Given('que existe um booking criado', async () => {
   bookingData = { ...defaultBooking };
   const response = await bookingClient.createBooking(bookingData);
-  const body: CreateBookingResponse = await response.json();
+  const body: CreateBookingResponse = CreateBookingResponseSchema.parse(await response.json());
   bookingId = body.bookingid;
 });
 
@@ -108,7 +118,7 @@ Then('o booking deve ser criado com sucesso', async () => {
 });
 
 Then('o id do booking criado deve ser retornado', async () => {
-  const body: CreateBookingResponse = await lastResponse.json();
+  const body: CreateBookingResponse = CreateBookingResponseSchema.parse(await lastResponse.json());
   expect(body.bookingid).toBeGreaterThan(0);
   bookingId = body.bookingid;
 });
@@ -124,7 +134,7 @@ When('ele busca o booking pelo id {string}', async (id: string) => {
 
 Then('os dados retornados devem corresponder ao booking criado', async () => {
   expect(lastResponse.status()).toBe(200);
-  const body: Booking = await lastResponse.json();
+  const body: Booking = BookingSchema.parse(await lastResponse.json());
   expect(body).toEqual(bookingData);
 });
 
@@ -139,7 +149,7 @@ When('ele busca bookings filtrando pelo firstname e lastname do booking criado',
 
 Then('o id do booking criado deve estar entre os resultados', async () => {
   expect(lastResponse.status()).toBe(200);
-  const body: BookingId[] = await lastResponse.json();
+  const body: BookingId[] = z.array(BookingIdSchema).parse(await lastResponse.json());
   expect(body.some((b) => b.bookingid === bookingId)).toBe(true);
 });
 
@@ -149,7 +159,7 @@ When('ele busca bookings filtrando por um firstname e lastname que não correspo
 
 Then('o id do booking criado não deve estar entre os resultados', async () => {
   expect(lastResponse.status()).toBe(200);
-  const body: BookingId[] = await lastResponse.json();
+  const body: BookingId[] = z.array(BookingIdSchema).parse(await lastResponse.json());
   expect(body.some((b) => b.bookingid === bookingId)).toBe(false);
 });
 
@@ -178,7 +188,7 @@ When('ele atualiza parcialmente o booking alterando o sobrenome para {string}', 
 });
 
 Then('o sobrenome do booking deve ser {string}', async (lastname: string) => {
-  const body: Booking = await lastResponse.json();
+  const body: Booking = BookingSchema.parse(await lastResponse.json());
   expect(body.lastname).toBe(lastname);
 });
 
