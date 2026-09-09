@@ -1,4 +1,4 @@
-import { Given, When, Then, Before, After, Status, ITestCaseHookParameter } from '@cucumber/cucumber';
+import { Given, When, Then, Before, After, Status, ITestCaseHookParameter, IWorld } from '@cucumber/cucumber';
 import { request as newApiRequest, APIRequestContext, APIResponse } from 'playwright';
 import { expect } from '@playwright/test';
 import { AuthApiClient } from '../api/AuthApiClient';
@@ -43,7 +43,7 @@ Before(async () => {
   bookingData = undefined;
 });
 
-After(async function (this: any, scenario: ITestCaseHookParameter) {
+After(async function (this: IWorld, scenario: ITestCaseHookParameter) {
   if (scenario.result?.status === Status.FAILED && lastResponse) {
     try {
       let responseBody: unknown;
@@ -77,7 +77,7 @@ After(async function (this: any, scenario: ITestCaseHookParameter) {
 });
 
 // AUTENTICAÇÃO
-Given('que ele não possui nenhum token de autenticação', async () => {
+Given('que ele não possui nenhum token de autenticação', () => {
   token = undefined;
 });
 
@@ -96,7 +96,7 @@ Then('ele deve receber um token de autenticação válido', async () => {
 });
 
 Then('a resposta deve indicar credenciais inválidas', async () => {
-  const body = await lastResponse.json();
+  const body = (await lastResponse.json()) as { reason: string };
   expect(body.reason).toBe('Bad credentials');
 });
 
@@ -113,7 +113,7 @@ When('ele cria um booking com dados válidos', async () => {
   lastResponse = await bookingClient.createBooking(bookingData);
 });
 
-Then('o booking deve ser criado com sucesso', async () => {
+Then('o booking deve ser criado com sucesso', () => {
   expect(lastResponse.status()).toBe(200);
 });
 
@@ -138,7 +138,7 @@ Then('os dados retornados devem corresponder ao booking criado', async () => {
   expect(body).toEqual(bookingData);
 });
 
-Then('a resposta deve indicar que o booking não foi encontrado', async () => {
+Then('a resposta deve indicar que o booking não foi encontrado', () => {
   expect(lastResponse.status()).toBe(404);
 });
 
@@ -175,11 +175,11 @@ When('ele tenta atualizar o booking com novos dados', async () => {
   lastResponse = await bookingClient.updateBooking(bookingId as number, updated, token ?? '');
 });
 
-Then('o booking deve ser atualizado com sucesso', async () => {
+Then('o booking deve ser atualizado com sucesso', () => {
   expect(lastResponse.status()).toBe(200);
 });
 
-Then('a resposta deve indicar acesso não autorizado', async () => {
+Then('a resposta deve indicar acesso não autorizado', () => {
   expect(lastResponse.status()).toBe(403);
 });
 
@@ -201,6 +201,6 @@ When('ele tenta remover o booking', async () => {
   lastResponse = await bookingClient.deleteBooking(bookingId as number, token ?? '');
 });
 
-Then('o booking deve ser removido com sucesso', async () => {
+Then('o booking deve ser removido com sucesso', () => {
   expect(lastResponse.status()).toBe(201);
 });
