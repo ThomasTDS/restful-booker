@@ -4,6 +4,11 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    ignore:
+      # typescript-eslint@8.70.0 só aceita typescript >=4.8.4 <6.1.0 como peer
+      # dependency; bump de major do typescript quebra o npm ci até isso mudar.
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: 'github-actions'
     directory: '/'
