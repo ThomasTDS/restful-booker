@@ -28,7 +28,7 @@
   },
   "type": "commonjs",
   "devDependencies": {
-    "@cucumber/cucumber": "^12.2.0",
+    "@cucumber/cucumber": "^13.2.1",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.56.0",
     "eslint": "^10.10.0",
