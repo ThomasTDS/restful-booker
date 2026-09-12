@@ -23,6 +23,7 @@ Legenda:
 | TC-009 | Atualização  | Atualizar parcialmente o booking com PATCH         | Funcional | Média      | Automatizado | [update-booking.feature:17](../features/update-booking.feature#L17) |
 | TC-010 | Remoção      | Remover booking com token válido                   | Funcional | Crítica    | Automatizado | [delete-booking.feature:3](../features/delete-booking.feature#L3)   |
 | TC-011 | Remoção      | Tentar remover booking sem token de autenticação   | Negativo  | Alta       | Automatizado | [delete-booking.feature:9](../features/delete-booking.feature#L9)   |
+| TC-012 | Atualização  | Tentar atualizar parcialmente booking sem token (PATCH) | Negativo | Alta   | Automatizado | [update-booking.feature:27](../features/update-booking.feature#L27) |
 
 `BookingApiClient.getBookingIds` também aceita filtro por `checkin`/`checkout`, mas o TC-006 cobre só `firstname`/`lastname`: o filtro por data na API pública de demonstração é conhecido por ser instável, e testá-lo arriscaria um teste flaky em vez de validar um comportamento real.
 

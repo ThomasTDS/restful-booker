@@ -64,12 +64,13 @@ Roda só os fluxos ponta-a-ponta mais críticos (autenticação, criação, cons
 ### Lint e formatação
 
 ```
-npm run lint           # ESLint (typescript-eslint, com informação de tipos)
-npm run format:check   # Prettier, só verifica
-npm run format         # Prettier, aplica as correções
+npm run typecheck     # tsc --noEmit
+npm run lint          # ESLint (typescript-eslint, com informação de tipos)
+npm run format:check  # Prettier, só verifica
+npm run format        # Prettier, aplica as correções
 ```
 
-O CI roda `lint` e `format:check` antes dos testes, então mudanças com problema de estilo ou tipo falham rápido, sem gastar tempo batendo na API pública.
+O CI roda `typecheck`, `lint` e `format:check` antes dos testes, então mudanças com problema de tipo ou estilo falham rápido, sem gastar tempo batendo na API pública.
 
 ### Rodar contra outra URL
 
