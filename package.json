@@ -2,17 +2,30 @@
   "name": "qa-api-restful-booker",
   "version": "1.0.0",
   "description": "Testes de API (BDD + Page-Object-like clients) contra a restful-booker demo API",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "test": "cucumber-js",
     "test:smoke": "cucumber-js --tags @smoke",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "keywords": [],
-  "author": "",
+  "author": "ThomasTDS",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThomasTDS/restful-booker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ThomasTDS/restful-booker/issues"
+  },
+  "homepage": "https://github.com/ThomasTDS/restful-booker#readme",
+  "engines": {
+    "node": ">=22"
+  },
   "type": "commonjs",
   "devDependencies": {
     "@cucumber/cucumber": "^12.2.0",

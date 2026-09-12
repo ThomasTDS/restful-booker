@@ -23,3 +23,10 @@ Feature: Atualização de booking (PUT e PATCH)
     When ele atualiza parcialmente o booking alterando o sobrenome para "Silva"
     Then o booking deve ser atualizado com sucesso
     And o sobrenome do booking deve ser "Silva"
+
+  @TC-012
+  Scenario: Tentar atualizar parcialmente booking sem token de autenticação
+    Given que existe um booking criado
+    And que ele não possui nenhum token de autenticação
+    When ele tenta atualizar parcialmente o booking alterando o sobrenome para "NaoDeveriaFuncionar"
+    Then a resposta deve indicar acesso não autorizado

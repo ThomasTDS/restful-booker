@@ -187,6 +187,10 @@ When('ele atualiza parcialmente o booking alterando o sobrenome para {string}', 
   lastResponse = await bookingClient.partialUpdateBooking(bookingId as number, { lastname }, token as string);
 });
 
+When('ele tenta atualizar parcialmente o booking alterando o sobrenome para {string}', async (lastname: string) => {
+  lastResponse = await bookingClient.partialUpdateBooking(bookingId as number, { lastname }, token ?? '');
+});
+
 Then('o sobrenome do booking deve ser {string}', async (lastname: string) => {
   const body: Booking = BookingSchema.parse(await lastResponse.json());
   expect(body.lastname).toBe(lastname);
