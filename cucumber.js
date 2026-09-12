@@ -5,5 +5,6 @@ module.exports = {
     requireModule: ['ts-node/register'],
     format: ['progress', 'html:reports/cucumber-report.html'],
     parallel: 1,
+    retry: 1,
   },
 };
