@@ -19,3 +19,6 @@ reports/
 
 # VS Code
 .vscode/
+
+# Husky internal (regenerado pelo script "prepare")
+.husky/_/

@@ -72,6 +72,8 @@ npm run format        # Prettier, aplica as correções
 
 O CI roda `typecheck`, `lint` e `format:check` antes dos testes, então mudanças com problema de tipo ou estilo falham rápido, sem gastar tempo batendo na API pública.
 
+Um hook de pre-commit (Husky + lint-staged, instalado automaticamente via `npm install`) roda `eslint --fix` e `prettier --write` nos arquivos staged antes de cada commit, então a maioria dos problemas de lint/formatação já é corrigida localmente antes de chegar no CI.
+
 ### Rodar contra outra URL
 
 Por padrão os testes apontam para `https://restful-booker.herokuapp.com`. Para rodar contra outro ambiente (ex: uma instância local ou de staging), defina a variável de ambiente `BASE_URL`:
