@@ -39,4 +39,8 @@ export class BookingApiClient {
       headers: { Cookie: `token=${token}` },
     });
   }
+
+  async exemploComBug(id: number) {
+    await this.getBooking(id);
+  }
 }
