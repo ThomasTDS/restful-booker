@@ -24,8 +24,15 @@ Legenda:
 | TC-010 | Remoção      | Remover booking com token válido                        | Funcional | Crítica    | Automatizado | [delete-booking.feature:3](../features/delete-booking.feature#L3)   |
 | TC-011 | Remoção      | Tentar remover booking sem token de autenticação        | Negativo  | Alta       | Automatizado | [delete-booking.feature:9](../features/delete-booking.feature#L9)   |
 | TC-012 | Atualização  | Tentar atualizar parcialmente booking sem token (PATCH) | Negativo  | Alta       | Automatizado | [update-booking.feature:27](../features/update-booking.feature#L27) |
+| TC-013 | Criação      | Criar booking com corpo vazio, sem campos obrigatórios  | Negativo  | Alta       | Automatizado | [create-booking.feature:20](../features/create-booking.feature#L20) |
+| TC-014 | Criação      | Criar booking com totalprice de tipo inválido           | Negativo  | Média      | Automatizado | [create-booking.feature:28](../features/create-booking.feature#L28) |
+| TC-015 | Criação      | Criar booking com depositpaid de tipo inválido          | Negativo  | Média      | Automatizado | [create-booking.feature:37](../features/create-booking.feature#L37) |
+| TC-016 | Criação      | Criar booking com data de check-in em formato inválido  | Negativo  | Média      | Automatizado | [create-booking.feature:46](../features/create-booking.feature#L46) |
+| TC-017 | Criação      | Criar booking com totalprice negativo                   | Negativo  | Baixa      | Automatizado | [create-booking.feature:54](../features/create-booking.feature#L54) |
 
 `BookingApiClient.getBookingIds` também aceita filtro por `checkin`/`checkout`, mas o TC-006 cobre só `firstname`/`lastname`: o filtro por data na API pública de demonstração é conhecido por ser instável, e testá-lo arriscaria um teste flaky em vez de validar um comportamento real.
+
+TC-013 a TC-017 documentam falhas reais de validação de input da API pública (500 em vez de 400 para campos ausentes, e corrupção silenciosa de dados em vez de rejeição de tipo inválido) — ver [Estrutura de Testes e Padrões Aplicados](../README.md#estrutura-de-testes-e-padrões-aplicados) sobre a prática de documentar bugs reais em vez de presumir o comportamento esperado.
 
 ## Smoke suite
 
