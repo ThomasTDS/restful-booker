@@ -1,6 +1,7 @@
 # 🔌 QA API + Cucumber - restful-booker
 
 [![API Tests](https://github.com/ThomasTDS/restful-booker/actions/workflows/tests.yml/badge.svg)](https://github.com/ThomasTDS/restful-booker/actions/workflows/tests.yml)
+[![Smoke Tests](https://github.com/ThomasTDS/restful-booker/actions/workflows/smoke-tests.yml/badge.svg)](https://github.com/ThomasTDS/restful-booker/actions/workflows/smoke-tests.yml)
 
 ## Descrição
 
@@ -18,7 +19,8 @@ qa-api-restful-booker/
 │   ├── ISSUE_TEMPLATE/
 │   │   └── bug_report.md   # Template de Issue para bugs reais
 │   ├── workflows/
-│   │   └── tests.yml       # Pipeline de CI (push, PR e execução diária agendada)
+│   │   ├── tests.yml       # Pipeline de CI completo (push/PR para main e execução diária agendada) — check obrigatório de merge
+│   │   └── smoke-tests.yml # Smoke suite em qualquer push, para feedback rápido em branches de feature
 │   └── CODEOWNERS          # Revisor obrigatório de Pull Request na branch main
 ├── docs/
 │   └── test-cases.md       # Matriz de rastreabilidade dos test cases
@@ -117,7 +119,7 @@ Autenticação: `POST /auth` com `{ "username": "admin", "password": "password12
 - Relatório HTML automatizado a cada execução (`reports/cucumber-report.html`).
 - Limpeza automática: o hook `After` remove o booking criado no cenário (via token próprio de limpeza), evitando acúmulo de dados na API pública.
 - Retry automático (`retry: 1` no `cucumber.js`): um cenário que falha roda uma segunda vez antes de ser reportado como falha, amortecendo instabilidade transitória da API pública de demonstração.
-- Integração contínua via GitHub Actions: os testes rodam automaticamente a cada push e pull request para `main`, e também diariamente às 06:00 UTC (ver [.github/workflows/tests.yml](.github/workflows/tests.yml)) para detectar quebras causadas pela própria API pública, com o relatório HTML publicado como artifact do workflow.
+- Integração contínua via GitHub Actions em dois workflows: a suíte completa (ver [.github/workflows/tests.yml](.github/workflows/tests.yml)) roda a cada push e pull request para `main` e também diariamente às 06:00 UTC, para detectar quebras causadas pela própria API pública, com o relatório HTML publicado como artifact do workflow — é o check obrigatório para merge; e a smoke suite (ver [.github/workflows/smoke-tests.yml](.github/workflows/smoke-tests.yml)) roda a cada push em qualquer branch, dando feedback rápido enquanto se trabalha numa feature, antes de abrir o PR.
 - Dependências atualizadas automaticamente pelo Dependabot (npm e GitHub Actions, semanal — ver [.github/dependabot.yml](.github/dependabot.yml)). PRs de patch/minor com CI verde são mergeados automaticamente ([.github/workflows/dependabot-auto-merge.yml](.github/workflows/dependabot-auto-merge.yml)); bumps de major exigem revisão manual.
 - Rastreabilidade de QA: matriz de test cases em [docs/test-cases.md](docs/test-cases.md), com tags `@TC-XXX` em cada `Scenario` e um subconjunto `@smoke` (`npm run test:smoke`) cobrindo os fluxos ponta-a-ponta mais críticos. Bugs reais encontrados são documentados como GitHub Issues usando o template em [.github/ISSUE_TEMPLATE/bug_report.md](.github/ISSUE_TEMPLATE/bug_report.md).
 
