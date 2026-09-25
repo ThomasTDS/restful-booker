@@ -17,8 +17,9 @@ qa-api-restful-booker/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
 │   │   └── bug_report.md   # Template de Issue para bugs reais
-│   └── workflows/
-│       └── tests.yml       # Pipeline de CI (push, PR e execução diária agendada)
+│   ├── workflows/
+│   │   └── tests.yml       # Pipeline de CI (push, PR e execução diária agendada)
+│   └── CODEOWNERS          # Revisor obrigatório de Pull Request na branch main
 ├── docs/
 │   └── test-cases.md       # Matriz de rastreabilidade dos test cases
 ├── features/               # Cenários em Gherkin (.feature)
@@ -32,6 +33,7 @@ qa-api-restful-booker/
 ├── package.json            # Dependências e scripts NPM
 ├── tsconfig.json           # Configuração do TypeScript
 ├── LICENSE
+├── SECURITY.md             # Política de segurança e como reportar vulnerabilidades
 └── README.md               # Este arquivo
 ```
 
