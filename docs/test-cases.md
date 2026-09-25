@@ -29,10 +29,19 @@ Legenda:
 | TC-015 | Criação      | Criar booking com depositpaid de tipo inválido          | Negativo  | Média      | Automatizado | [create-booking.feature:37](../features/create-booking.feature#L37) |
 | TC-016 | Criação      | Criar booking com data de check-in em formato inválido  | Negativo  | Média      | Automatizado | [create-booking.feature:46](../features/create-booking.feature#L46) |
 | TC-017 | Criação      | Criar booking com totalprice negativo                   | Negativo  | Baixa      | Automatizado | [create-booking.feature:54](../features/create-booking.feature#L54) |
+| TC-018 | Atualização  | Tentar atualizar booking com corpo vazio (PUT)          | Negativo  | Alta       | Automatizado | [update-booking.feature:38](../features/update-booking.feature#L38) |
+| TC-019 | Atualização  | Atualizar booking com totalprice de tipo inválido (PUT) | Negativo  | Média      | Automatizado | [update-booking.feature:47](../features/update-booking.feature#L47) |
+| TC-020 | Atualização  | Tentar atualizar booking sem o campo bookingdates (PUT) | Negativo  | Alta       | Automatizado | [update-booking.feature:55](../features/update-booking.feature#L55) |
+| TC-021 | Atualização  | Atualizar parcialmente com lastname de tipo inválido    | Negativo  | Média      | Automatizado | [update-booking.feature:64](../features/update-booking.feature#L64) |
+| TC-022 | Atualização  | Atualizar parcialmente com corpo vazio não altera nada  | Funcional | Baixa      | Automatizado | [update-booking.feature:74](../features/update-booking.feature#L74) |
+| TC-023 | Atualização  | Tentar atualizar (PUT/PATCH) um booking inexistente     | Negativo  | Média      | Automatizado | [update-booking.feature:86](../features/update-booking.feature#L86) |
+| TC-024 | Remoção      | Tentar remover um booking inexistente                   | Negativo  | Média      | Automatizado | [delete-booking.feature:21](../features/delete-booking.feature#L21) |
 
 `BookingApiClient.getBookingIds` também aceita filtro por `checkin`/`checkout`, mas o TC-006 cobre só `firstname`/`lastname`: o filtro por data na API pública de demonstração é conhecido por ser instável, e testá-lo arriscaria um teste flaky em vez de validar um comportamento real.
 
 TC-013 a TC-017 documentam falhas reais de validação de input da API pública (500 em vez de 400 para campos ausentes, e corrupção silenciosa de dados em vez de rejeição de tipo inválido) — ver [Estrutura de Testes e Padrões Aplicados](../README.md#estrutura-de-testes-e-padrões-aplicados) sobre a prática de documentar bugs reais em vez de presumir o comportamento esperado.
+
+TC-018 a TC-024 estendem essa mesma investigação para PUT, PATCH e DELETE: PUT valida corretamente campos obrigatórios ausentes (400, ao contrário do POST), mas ainda corrompe silenciosamente um totalprice de tipo inválido; PATCH não valida tipo nenhum; e PUT/PATCH/DELETE em um id inexistente retornam 405 Method Not Allowed em vez do 404 esperado — o mesmo bug real, consistente entre os três verbos.
 
 ## Smoke suite
 

@@ -249,6 +249,71 @@ Then('o sobrenome do booking deve ser {string}', async (lastname: string) => {
   expect(body.lastname).toBe(lastname);
 });
 
+// ATUALIZAÇÃO — payload inválido
+When('ele atualiza o booking com corpo vazio', async () => {
+  lastResponse = await bookingClient.updateBookingRaw(bookingId as number, {}, token as string);
+});
+
+When('ele atualiza o booking com totalprice do tipo texto', async () => {
+  lastResponse = await bookingClient.updateBookingRaw(
+    bookingId as number,
+    { ...defaultBooking, totalprice: 'nao_e_numero' },
+    token as string,
+  );
+});
+
+When('ele atualiza o booking sem o campo bookingdates', async () => {
+  lastResponse = await bookingClient.updateBookingRaw(
+    bookingId as number,
+    {
+      firstname: defaultBooking.firstname,
+      lastname: defaultBooking.lastname,
+      totalprice: defaultBooking.totalprice,
+      depositpaid: defaultBooking.depositpaid,
+    },
+    token as string,
+  );
+});
+
+When('ele atualiza parcialmente o booking com lastname do tipo número', async () => {
+  lastResponse = await bookingClient.partialUpdateBookingRaw(bookingId as number, { lastname: 12345 }, token as string);
+});
+
+When('ele atualiza parcialmente o booking com corpo vazio', async () => {
+  lastResponse = await bookingClient.partialUpdateBooking(bookingId as number, {}, token as string);
+});
+
+When('ele tenta {string} um booking inexistente', async (verbo: string) => {
+  if (verbo === 'atualizar') {
+    lastResponse = await bookingClient.updateBooking(999999999, defaultBooking, token as string);
+  } else {
+    lastResponse = await bookingClient.partialUpdateBooking(999999999, { lastname: 'Novo' }, token as string);
+  }
+});
+
+Then('a API deve rejeitar o payload com erro de requisição inválida', () => {
+  expect(lastResponse.status()).toBe(400);
+});
+
+Then('o totalprice do booking atualizado deve ser nulo', async () => {
+  const body = (await lastResponse.json()) as { totalprice: number | null };
+  expect(body.totalprice).toBeNull();
+});
+
+Then('o lastname do booking atualizado deve ser o número enviado', async () => {
+  const body = (await lastResponse.json()) as { lastname: number };
+  expect(body.lastname).toBe(12345);
+});
+
+Then('os dados do booking não devem ter sido alterados', async () => {
+  const body: Booking = BookingSchema.parse(await lastResponse.json());
+  expect(body).toEqual(bookingData);
+});
+
+Then('a API deve responder que o método não é permitido', () => {
+  expect(lastResponse.status()).toBe(405);
+});
+
 // REMOÇÃO
 When('ele remove o booking', async () => {
   lastResponse = await bookingClient.deleteBooking(bookingId as number, token as string);
@@ -256,6 +321,10 @@ When('ele remove o booking', async () => {
 
 When('ele tenta remover o booking', async () => {
   lastResponse = await bookingClient.deleteBooking(bookingId as number, token ?? '');
+});
+
+When('ele tenta remover um booking inexistente', async () => {
+  lastResponse = await bookingClient.deleteBooking(999999999, token as string);
 });
 
 Then('o booking deve ser removido com sucesso', () => {

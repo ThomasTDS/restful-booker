@@ -33,9 +33,27 @@ export class BookingApiClient {
     });
   }
 
+  // Variante solta de updateBooking, para os testes de payload inválido no PUT
+  // (campos ausentes ou com tipo errado, que não passariam pelo tipo Booking).
+  async updateBookingRaw(id: number, payload: Record<string, unknown>, token: string) {
+    return this.request.put(`/booking/${id}`, {
+      data: payload,
+      headers: { Cookie: `token=${token}` },
+    });
+  }
+
   async partialUpdateBooking(id: number, partialBooking: Partial<Booking>, token: string) {
     return this.request.patch(`/booking/${id}`, {
       data: partialBooking,
+      headers: { Cookie: `token=${token}` },
+    });
+  }
+
+  // Variante solta de partialUpdateBooking, para os testes de payload inválido no
+  // PATCH (campos com tipo errado, que não passariam pelo tipo Partial<Booking>).
+  async partialUpdateBookingRaw(id: number, payload: Record<string, unknown>, token: string) {
+    return this.request.patch(`/booking/${id}`, {
+      data: payload,
       headers: { Cookie: `token=${token}` },
     });
   }
