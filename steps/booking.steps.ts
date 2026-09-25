@@ -123,6 +123,59 @@ Then('o id do booking criado deve ser retornado', async () => {
   bookingId = body.bookingid;
 });
 
+// CRIAÇÃO — payload inválido
+When('ele cria um booking sem nenhum campo obrigatório', async () => {
+  lastResponse = await bookingClient.createBookingRaw({});
+});
+
+When('ele cria um booking com totalprice do tipo texto', async () => {
+  lastResponse = await bookingClient.createBookingRaw({ ...defaultBooking, totalprice: 'cento_e_cinquenta' });
+});
+
+When('ele cria um booking com depositpaid do tipo texto', async () => {
+  lastResponse = await bookingClient.createBookingRaw({ ...defaultBooking, depositpaid: 'sim' });
+});
+
+When('ele cria um booking com uma data de check-in em formato inválido', async () => {
+  lastResponse = await bookingClient.createBookingRaw({
+    ...defaultBooking,
+    bookingdates: { ...defaultBooking.bookingdates, checkin: 'data-invalida' },
+  });
+});
+
+When('ele cria um booking com totalprice negativo', async () => {
+  lastResponse = await bookingClient.createBookingRaw({ ...defaultBooking, totalprice: -150 });
+});
+
+Then('a API deve responder com erro interno do servidor', () => {
+  expect(lastResponse.status()).toBe(500);
+});
+
+Then('o totalprice do booking criado deve ser nulo', async () => {
+  const body = (await lastResponse.json()) as { bookingid: number; booking: { totalprice: number | null } };
+  expect(body.booking.totalprice).toBeNull();
+  bookingId = body.bookingid;
+});
+
+Then('o depositpaid do booking criado deve ser convertido para true', async () => {
+  const body = (await lastResponse.json()) as { bookingid: number; booking: { depositpaid: boolean } };
+  expect(body.booking.depositpaid).toBe(true);
+  bookingId = body.bookingid;
+});
+
+Then('o checkin do booking criado deve estar corrompido', async () => {
+  const body = (await lastResponse.json()) as { bookingid: number; booking: { bookingdates: { checkin: string } } };
+  expect(body.booking.bookingdates.checkin).not.toBe('data-invalida');
+  expect(body.booking.bookingdates.checkin).toContain('NaN');
+  bookingId = body.bookingid;
+});
+
+Then('o totalprice do booking criado deve ser negativo', async () => {
+  const body = (await lastResponse.json()) as { bookingid: number; booking: { totalprice: number } };
+  expect(body.booking.totalprice).toBeLessThan(0);
+  bookingId = body.bookingid;
+});
+
 // CONSULTA
 When('ele busca o booking pelo id', async () => {
   lastResponse = await bookingClient.getBooking(bookingId as number);

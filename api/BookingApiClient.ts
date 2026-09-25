@@ -20,6 +20,12 @@ export class BookingApiClient {
     return this.request.post('/booking', { data: booking });
   }
 
+  // Aceita um payload solto (sem checar contra o tipo Booking) para os testes de payload
+  // inválido, que precisam enviar campos ausentes ou com tipo errado de propósito.
+  async createBookingRaw(payload: Record<string, unknown>) {
+    return this.request.post('/booking', { data: payload });
+  }
+
   async updateBooking(id: number, booking: Booking, token: string) {
     return this.request.put(`/booking/${id}`, {
       data: booking,
