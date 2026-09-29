@@ -1,0 +1,7 @@
+# Ver https://docs.github.com/articles/about-code-owners
+#
+# Define quem é dono e revisor padrão de todo o conteúdo do repositório.
+# Como a branch main é protegida (ver README), qualquer Pull Request
+# passa a exigir revisão do(s) owner(s) listado(s) abaixo antes do merge.
+
+* @ThomasTDS

@@ -20,9 +20,24 @@ export class BookingApiClient {
     return this.request.post('/booking', { data: booking });
   }
 
+  // Aceita um payload solto (sem checar contra o tipo Booking) para os testes de payload
+  // inválido, que precisam enviar campos ausentes ou com tipo errado de propósito.
+  async createBookingRaw(payload: Record<string, unknown>) {
+    return this.request.post('/booking', { data: payload });
+  }
+
   async updateBooking(id: number, booking: Booking, token: string) {
     return this.request.put(`/booking/${id}`, {
       data: booking,
+      headers: { Cookie: `token=${token}` },
+    });
+  }
+
+  // Variante solta de updateBooking, para os testes de payload inválido no PUT
+  // (campos ausentes ou com tipo errado, que não passariam pelo tipo Booking).
+  async updateBookingRaw(id: number, payload: Record<string, unknown>, token: string) {
+    return this.request.put(`/booking/${id}`, {
+      data: payload,
       headers: { Cookie: `token=${token}` },
     });
   }
@@ -34,9 +49,22 @@ export class BookingApiClient {
     });
   }
 
+  // Variante solta de partialUpdateBooking, para os testes de payload inválido no
+  // PATCH (campos com tipo errado, que não passariam pelo tipo Partial<Booking>).
+  async partialUpdateBookingRaw(id: number, payload: Record<string, unknown>, token: string) {
+    return this.request.patch(`/booking/${id}`, {
+      data: payload,
+      headers: { Cookie: `token=${token}` },
+    });
+  }
+
   async deleteBooking(id: number, token: string) {
     return this.request.delete(`/booking/${id}`, {
       headers: { Cookie: `token=${token}` },
     });
+  }
+
+  async exemploComBug(id: number) {
+    await this.getBooking(id);
   }
 }
