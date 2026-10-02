@@ -13,6 +13,13 @@
     "rootDir": ".",
     "ignoreDeprecations": "5.0"
   },
-  "include": ["features/**/*.ts", "steps/**/*.ts", "api/**/*.ts", "types/**/*.ts"],
+  "include": [
+    "features/**/*.ts",
+    "steps/**/*.ts",
+    "api/**/*.ts",
+    "types/**/*.ts",
+    "tests/**/*.ts",
+    "vitest.config.mts"
+  ],
   "exclude": ["node_modules", "dist"]
 }
