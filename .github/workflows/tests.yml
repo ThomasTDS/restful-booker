@@ -8,6 +8,9 @@ on:
   schedule:
     - cron: '0 6 * * *'
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -34,7 +37,18 @@ jobs:
       - name: Verificar formatação
         run: npm run format:check
 
-      - name: Rodar testes
+      - name: Rodar testes unitários com cobertura
+        run: npm run coverage
+
+      - name: Enviar cobertura para o Codecov
+        if: always()
+        uses: codecov/codecov-action@v7
+        with:
+          files: reports/coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+      - name: Rodar testes de integração
         run: npm test
 
       - name: Publicar relatório HTML
