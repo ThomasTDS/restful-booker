@@ -1,5 +1,7 @@
 # 🔌 QA API + Cucumber - restful-booker
 
+🇧🇷 Português | [🇺🇸 English](README.en.md)
+
 [![API Tests](https://github.com/ThomasTDS/restful-booker/actions/workflows/tests.yml/badge.svg)](https://github.com/ThomasTDS/restful-booker/actions/workflows/tests.yml)
 [![Smoke Tests](https://github.com/ThomasTDS/restful-booker/actions/workflows/smoke-tests.yml/badge.svg)](https://github.com/ThomasTDS/restful-booker/actions/workflows/smoke-tests.yml)
 [![codecov](https://codecov.io/gh/ThomasTDS/restful-booker/branch/main/graph/badge.svg)](https://codecov.io/gh/ThomasTDS/restful-booker)
@@ -40,7 +42,8 @@ qa-api-restful-booker/
 ├── tsconfig.json           # Configuração do TypeScript
 ├── LICENSE
 ├── SECURITY.md             # Política de segurança e como reportar vulnerabilidades
-└── README.md               # Este arquivo
+├── README.md               # Este arquivo (português)
+└── README.en.md            # Versão em inglês
 ```
 
 ---
