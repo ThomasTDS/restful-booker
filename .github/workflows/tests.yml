@@ -10,6 +10,8 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 jobs:
   test:
@@ -61,3 +63,28 @@ jobs:
           name: cucumber-report
           path: reports/cucumber-report.html
           retention-days: 15
+
+      - name: Preparar site de relatórios
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: cp .github/pages/index.html reports/index.html
+
+      - name: Enviar site para o GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: reports
+
+  deploy-pages:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
