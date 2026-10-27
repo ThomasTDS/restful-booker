@@ -89,7 +89,7 @@ npm run format:check  # Prettier, check only
 npm run format        # Prettier, applies fixes
 ```
 
-CI runs `typecheck`, `lint`, `format:check`, and the unit tests (with coverage) before the integration tests, so changes with a type, style, or API-Client-logic problem fail fast, without spending time hitting the public API.
+CI runs `typecheck`, `lint`, `format:check`, `npm audit`, and the unit tests (with coverage) before the integration tests, so changes with a type, style, vulnerable-dependency, or API-Client-logic problem fail fast, without spending time hitting the public API.
 
 A pre-commit hook (Husky + lint-staged, installed automatically via `npm install`) runs `eslint --fix` and `prettier --write` on staged files before every commit, so most lint/formatting issues are already fixed locally before reaching CI.
 
@@ -131,6 +131,7 @@ Authentication: `POST /auth` with `{ "username": "admin", "password": "password1
 - API Client Objects: `AuthApiClient` and `BookingApiClient` encapsulate HTTP calls, the same way Page Objects encapsulate UI elements.
 - Schema validation with [Zod](https://zod.dev/): API responses are validated at runtime against the schemas in `types/booking.ts` (the single source of truth, with TypeScript types derived via `z.infer`), not just typed by annotation — if the API changes a response's shape, the test fails with a clear message instead of passing silently or breaking further down the line.
 - Coverage of authentication, full CRUD, PUT vs. PATCH, and unauthorized-access cases (403).
+- Vulnerable dependency auditing with `npm audit`, running in CI right after the type/lint/formatting checks and before the tests — blocks the merge if it finds any known vulnerability in an installed dependency, direct or dev.
 - Test pyramid: besides the BDD scenarios (`steps/`), which are real integration tests against `restful-booker`, `tests/unit/` covers `api/` and `types/` in isolation, with a fake of Playwright's `APIRequestContext` standing in for the network call — no network, no dependency on the public API being up. Coverage is measured with [`@vitest/coverage-v8`](https://vitest.dev/guide/coverage.html) and sent to [Codecov](https://codecov.io/gh/ThomasTDS/restful-booker), with a 100% gate on new/changed code per PR (`codecov.yml`). The upload uses `secrets.CODECOV_TOKEN` with `fail_ci_if_error: false`: until the repository is connected on codecov.io and the secret is configured, this step runs without breaking CI, it just won't populate the badge.
 - Automated HTML report on every run (`reports/cucumber-report.html`).
 - Automatic cleanup: the `After` hook removes the booking created in the scenario (via its own cleanup token), avoiding data buildup on the public API.

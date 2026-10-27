@@ -30,5 +30,8 @@ jobs:
       - name: Verificar formatação
         run: npm run format:check
 
+      - name: Auditar dependências
+        run: npm audit
+
       - name: Rodar smoke suite
         run: npm run test:smoke

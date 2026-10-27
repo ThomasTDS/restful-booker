@@ -90,7 +90,7 @@ npm run format:check  # Prettier, só verifica
 npm run format        # Prettier, aplica as correções
 ```
 
-O CI roda `typecheck`, `lint`, `format:check` e os testes unitários (com cobertura) antes dos testes de integração, então mudanças com problema de tipo, estilo ou lógica dos API Clients falham rápido, sem gastar tempo batendo na API pública.
+O CI roda `typecheck`, `lint`, `format:check`, `npm audit` e os testes unitários (com cobertura) antes dos testes de integração, então mudanças com problema de tipo, estilo, vulnerabilidade de dependência ou lógica dos API Clients falham rápido, sem gastar tempo batendo na API pública.
 
 Um hook de pre-commit (Husky + lint-staged, instalado automaticamente via `npm install`) roda `eslint --fix` e `prettier --write` nos arquivos staged antes de cada commit, então a maioria dos problemas de lint/formatação já é corrigida localmente antes de chegar no CI.
 
@@ -132,6 +132,7 @@ Autenticação: `POST /auth` com `{ "username": "admin", "password": "password12
 - API Client Objects: `AuthApiClient` e `BookingApiClient` encapsulam as chamadas HTTP, do mesmo jeito que Page Objects encapsulam elementos de UI.
 - Validação de schema com [Zod](https://zod.dev/): as respostas da API são validadas em tempo de execução contra os schemas em `types/booking.ts` (fonte única de verdade, com os tipos TypeScript derivados via `z.infer`), não só tipadas por anotação — se a API mudar o formato de uma resposta, o teste falha com uma mensagem clara em vez de passar silenciosamente ou quebrar mais adiante.
 - Cobertura de autenticação, CRUD completo, PUT vs. PATCH, e casos de acesso não autorizado (403).
+- Auditoria de dependências vulneráveis com `npm audit`, rodando no CI logo depois dos checks de tipo/lint/formatação e antes dos testes — bloqueia o merge se encontrar qualquer vulnerabilidade conhecida numa dependência instalada, direta ou de desenvolvimento.
 - Pirâmide de testes: além dos cenários de BDD (`steps/`), que são testes de integração reais contra a `restful-booker`, `tests/unit/` cobre `api/` e `types/` de forma isolada, com um fake do `APIRequestContext` do Playwright no lugar da chamada de rede — sem rede, sem depender da API pública estar no ar. Cobertura medida com [`@vitest/coverage-v8`](https://vitest.dev/guide/coverage.html) e enviada ao [Codecov](https://codecov.io/gh/ThomasTDS/restful-booker), com gate de 100% em código novo/alterado por PR (`codecov.yml`). O envio usa `secrets.CODECOV_TOKEN` com `fail_ci_if_error: false`: até o repositório ser conectado em codecov.io e o secret ser configurado, esse passo roda sem quebrar o CI, só sem popular o badge.
 - Relatório HTML automatizado a cada execução (`reports/cucumber-report.html`).
 - Limpeza automática: o hook `After` remove o booking criado no cenário (via token próprio de limpeza), evitando acúmulo de dados na API pública.
