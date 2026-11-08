@@ -1,6 +1,6 @@
 # 🔌 QA API + Cucumber - restful-booker
 
-🇧🇷 Português | [🇺🇸 English](README.en.md)
+🇧🇷 Português | [🇺🇸 English](README.en.md) | [🇪🇸 Español](README.es.md)
 
 [![API Tests](https://github.com/ThomasTDS/restful-booker/actions/workflows/tests.yml/badge.svg)](https://github.com/ThomasTDS/restful-booker/actions/workflows/tests.yml)
 [![Smoke Tests](https://github.com/ThomasTDS/restful-booker/actions/workflows/smoke-tests.yml/badge.svg)](https://github.com/ThomasTDS/restful-booker/actions/workflows/smoke-tests.yml)
@@ -43,7 +43,8 @@ qa-api-restful-booker/
 ├── LICENSE
 ├── SECURITY.md             # Política de segurança e como reportar vulnerabilidades
 ├── README.md               # Este arquivo (português)
-└── README.en.md            # Versão em inglês
+├── README.en.md            # Versão em inglês
+└── README.es.md            # Versão em espanhol
 ```
 
 ---
